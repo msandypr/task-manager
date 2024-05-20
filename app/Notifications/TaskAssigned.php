@@ -41,10 +41,10 @@ class TaskAssigned extends Notification
     public function toMail($notifiable)
     {
         return (new MailMessage)
-                    ->subject('Hello from Task Manager')
-                    ->line('New Task has been assigned to you.')
-                    ->action('View Task', route('task.show', ['task' => $this->task]))
-                    ->line('Thank you for using our application!');
+            ->subject('Hello from Task Manager')
+            ->line('New Task has been assigned to you.')
+            ->action('View Task', route('task.show', ['task' => $this->task->id]))
+            ->line('Thank you for using our application!');
     }
 
     /**
@@ -56,8 +56,8 @@ class TaskAssigned extends Notification
     public function toArray($notifiable)
     {
         return [
-            'title'=>$this->task->title,
-            'message'=>'New task assigned to you'
+            'title' => $this->task->title,
+            'message' => 'New task assigned to you'
         ];
     }
 }
