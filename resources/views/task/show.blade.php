@@ -4,23 +4,25 @@
         <div class="container">
             {{-- Action section --}}
             <div class="flex flex-row-reverse space-x-reverse">
-                <form method="post" action="/task/{{ $task->id }}">
-                    @csrf
-                    @method('DELETE')
-                    <button class="bg-red-500 h-10 w-10 rounded"><i class="fas fa-trash-alt fa-inverse"></i></button>
-                </form>
-                @if (!$task->completed)
-                    <button class="bg-green-500 h-10 w-10 rounded"><a href="/task/{{ $task->id }}/notify"><i class="fas fa-envelope fa-inverse"></i></a></button>
-                    <button class="bg-blue-500 h-10 w-10"><a href="/task/{{ $task->id }}/edit"> <i class="fas fa-edit fa-inverse"></i></a></button>
-                    <form method="post" action="/task/{{ $task->id }}/completed">
+                @auth <!-- Tampilkan tombol hanya jika pengguna login -->
+                    <form method="post" action="/task/{{ $task->id }}">
                         @csrf
-                        @method('PATCH')
-                        <button class="bg-blue-300 h-10 w-auto rounded">Mark Complete</button>
+                        @method('DELETE')
+                        <button class="bg-red-500 h-10 w-10 rounded"><i class="fas fa-trash-alt fa-inverse"></i></button>
                     </form>
-                @else
-                    <button class="bg-blue-500 h-10 w-10"><a href="/task/{{ $task->id }}/edit"> <i class="fas fa-edit fa-inverse"></i></a></button>
-                    <button class="bg-green-500 h-10 w-10 rounded"><a href="/task/{{ $task->id }}/notify"><i class="fas fa-envelope fa-inverse"></i></a></button>
-                @endif
+                    @if (!$task->completed)
+                        <button class="bg-green-500 h-10 w-10 rounded"><a href="/task/{{ $task->id }}/notify"><i class="fas fa-envelope fa-inverse"></i></a></button>
+                        <button class="bg-blue-500 h-10 w-10"><a href="/task/{{ $task->id }}/edit"> <i class="fas fa-edit fa-inverse"></i></a></button>
+                        <form method="post" action="/task/{{ $task->id }}/completed">
+                            @csrf
+                            @method('PATCH')
+                            <button class="bg-blue-300 h-10 w-auto rounded">Mark Complete</button>
+                        </form>
+                    @else
+                        <button class="bg-blue-500 h-10 w-10"><a href="/task/{{ $task->id }}/edit"> <i class="fas fa-edit fa-inverse"></i></a></button>
+                        <button class="bg-green-500 h-10 w-10 rounded"><a href="/task/{{ $task->id }}/notify"><i class="fas fa-envelope fa-inverse"></i></a></button>
+                    @endif
+                @endauth
             </div>
             <x-content-layout contentName="Date Created" contents="{{ date('d/m/Y', strtotime($task->created_at)) }}" />
             <x-content-layout contentName="Due Date" contents="{{ date('d/m/Y', strtotime($task->due)) }}" />
