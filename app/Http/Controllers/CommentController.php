@@ -6,6 +6,7 @@ use App\Models\Comment;
 use App\Models\Task;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class CommentController extends Controller
 {
@@ -20,9 +21,21 @@ class CommentController extends Controller
         $attributes = $request->validate([
             'body' => 'required'
         ]);
-        $attributes['task_id'] = $task->id;
-        $attributes['user_id'] = 1;
-        Comment::create($attributes);
+
+        // Dapatkan ID pengguna yang saat ini masuk
+        $userId = Auth::id();
+
+        // Pastikan ID pengguna ada
+        if ($userId) {
+            $attributes['task_id'] = $task->id;
+            $attributes['user_id'] = $userId;
+
+            Comment::create($attributes);
+        } else {
+            // Tindakan jika ID pengguna tidak tersedia
+            // Misalnya, kembalikan pesan kesalahan atau lakukan tindakan lain
+        }
+
         return back();
     }
 }

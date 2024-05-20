@@ -1,5 +1,5 @@
 <x-table.table-panel tableName="Tasks" :paginatorAttr="$tasks">
-    <div class="container flex items-center">
+    <div class="container flex items-center mb-4">
         <form method="GET" action="/task" class="ml-4">
             <x-form.input inputName="search" type="date" value="{{ request('search') }}"/>
             <x-form.button  buttonName="search" class=""/>

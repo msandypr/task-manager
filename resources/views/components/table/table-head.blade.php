@@ -1,4 +1,5 @@
 @props(['thName'])
-<th class="py-4 px-6 bg-grey-lightest font-bold uppercase text-sm text-grey-dark border-b border-grey-light">
-    {{$thName}}
+<th data-tw-merge
+    class="font-medium px-5 py-3 border-b-2 dark:border-darkmode-300 border-l border-r border-t whitespace-nowrap">
+    {{ $thName }}
 </th>

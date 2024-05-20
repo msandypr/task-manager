@@ -19,7 +19,7 @@
                     </form>
                 @else
                     <button class="bg-blue-500 h-10 w-10"><a href="/task/{{ $task->id }}/edit"> <i class="fas fa-edit fa-inverse"></i></a></button>
-                    <button class="bg-green-500 h-10 w-10 rounded"><a href="/task/{{ $task->id }}/notify"><i class="fas fa-envelope fa-inverse"></i>Notify</a></button>
+                    <button class="bg-green-500 h-10 w-10 rounded"><a href="/task/{{ $task->id }}/notify"><i class="fas fa-envelope fa-inverse"></i></a></button>
                 @endif
             </div>
             <x-content-layout contentName="Date Created" contents="{{ date('d/m/Y', strtotime($task->created_at)) }}" />
