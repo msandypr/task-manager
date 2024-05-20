@@ -9,6 +9,8 @@ class Comment extends Model
 {
     use HasFactory;
 
+    protected $fillable = ['body', 'task_id', 'user_id'];
+
     public function task()
     {
         return $this->belongsTo(Task::class);
