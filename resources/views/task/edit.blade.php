@@ -22,11 +22,19 @@
                     <select name="assigneduser_id" id="assigneduser_id">
                         @if ($users->count())
                             @foreach ($users as $user)
-                                <option value="{{ $user->id }}">
+                                <option value="{{ $user->id }}" @if($user->id == $task->assigneduser_id) selected @endif>
                                     {{ $user->name }}
                                 </option>
                             @endforeach
                         @endif
+                    </select>
+                </div>
+                <div class="mt-2">
+                    <label class="block text-sm text-gray-600" for="status">Status</label>
+                    <select name="status" id="status">
+                        <option value="ongoing" @if($task->status === 'ongoing') selected @endif>Ongoing</option>
+                        <option value="fixing" @if($task->status === 'fixing') selected @endif>Fixing</option>
+                        <option value="delay" @if($task->status === 'delay') selected @endif>Delay</option>
                     </select>
                 </div>
                 <div class="mt-6">

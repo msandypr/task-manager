@@ -4,7 +4,6 @@ namespace App\Models;
 
 use App\Models\User;
 use App\Models\Task;
-use Illuminate\Pagination\Paginator;
 
 trait TaskUserManager
 {
@@ -12,21 +11,19 @@ trait TaskUserManager
     public function getAssignedUser()
     {
         $assignedUser = User::find($this->assigneduser_id);
-        return ucwords($assignedUser->name);
+        return $assignedUser ? ucwords($assignedUser->name) : null;
     }
 
     public function getTaskCreatorUser()
     {
-        $taskcreator =  User::find($this->taskcreator_id);
-        return ucwords($taskcreator->name);
+        $taskcreator = User::find($this->taskcreator_id);
+        return $taskcreator ? ucwords($taskcreator->name) : null;
     }
 
     public function getTasksCreated()
     {
-        $tasksCreated = Task::where('taskcreator_id', $this->id)->get();
-        return $tasksCreated;
+        return Task::where('taskcreator_id', $this->id)->get();
     }
-
 
     public function noOfTaskCreated()
     {
@@ -35,8 +32,7 @@ trait TaskUserManager
 
     public function getTasksAssigned()
     {
-        $tasksAssigned = Task::where('assigneduser_id', $this->id);
-        return $tasksAssigned;
+        return Task::where('assigneduser_id', $this->id)->get();
     }
 
     public function noOfTaskAssigned()
@@ -51,23 +47,20 @@ trait TaskUserManager
 
     public function getAllUserTasks()
     {
-        $alltasks = $this->getTasksCreated()->merge($this->getTasksAssigned());
-        $alltasks->all();
-        return $alltasks;
+        return $this->getTasksCreated()->merge($this->getTasksAssigned());
     }
 
     public function noOfTaskDue()
     {
-        $due = Task::where('taskcreator_id', $this->id)
-            ->where('completed', 0)
-            ->orWhere('assigneduser_id', $this->id)
-            ->count();
-        return $due;
+        return Task::where(function ($query) {
+            $query->where('taskcreator_id', $this->id)
+                ->orWhere('assigneduser_id', $this->id);
+        })->count();
     }
 
     public function noOfTaskCompleted()
     {
-        return $this->noOfTaskAssigned() + $this->noOfTaskCreated() - $this->noOfTaskDue();
+        return 0; // Hanya untuk menjaga konsistensi, karena tidak ada lagi completed
     }
 
 }

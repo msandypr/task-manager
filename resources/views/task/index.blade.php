@@ -17,7 +17,7 @@
             <x-table.table-head thName="Created By" />
             <x-table.table-head thName="Assigned to" />
             <x-table.table-head thName="Due" />
-            <x-table.table-head thName="Completed" />
+            <x-table.table-head thName="Status" />
         </tr>
     </thead>
     <tbody>
@@ -30,11 +30,7 @@
                 <x-table.table-data tdName="{{ $task->getTaskCreatorUser()}}" />
                 <x-table.table-data tdName="{{ $task->getAssignedUser() }}" />
                 <x-table.table-data tdName="{{date('d/m/Y', strtotime($task->due))}}" />
-                @if($task->completed)
-                 <x-table.table-data tdName="Yes" />
-                @else
-                <x-table.table-data tdName="No" />
-                @endif
+                <x-table.table-data tdName="{{ $task->status }}" />
             </tr>
         @endforeach
     </tbody>

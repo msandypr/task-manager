@@ -5,12 +5,11 @@ namespace App\Http\Controllers;
 use App\Models\Task;
 use App\Models\User;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\Rule;
 use Illuminate\Support\Str;
 use App\Notifications\TaskAssigned;
-use Illuminate\Support\Facades\Notification;
 use App\Notifications\TaskCompleted;
+use Illuminate\Support\Facades\Notification;
 
 class TaskController extends Controller
 {
@@ -47,14 +46,14 @@ class TaskController extends Controller
     public function store(Request $request)
     {
         $attributes = $this->validateTask($request);
-        $attributes['taskcreator_id'] =  Auth::user()->id;
-        $attributes['completed'] = 0;
+        $attributes['taskcreator_id'] = auth()->id();
+        $attributes['status'] = 'ongoing'; // Default status
         $attributes['slug'] = Str::slug($request->title);
         $task = Task::create($attributes);
 
         $this->notifyUser($task->assigneduser_id);
 
-        return redirect('/task')->with('success', 'Task updated and assigned user notified by email');
+        return redirect('/task')->with('success', 'Task created and assigned user notified by email');
     }
 
     /**
@@ -66,7 +65,7 @@ class TaskController extends Controller
     public function show($id)
     {
         return view('task.show', [
-            'task' => Task::find($id)
+            'task' => Task::findOrFail($id)
         ]);
     }
 
@@ -79,9 +78,25 @@ class TaskController extends Controller
     public function edit($id)
     {
         return view('task.edit', [
-            'task' => Task::find($id),
-            'users' => User::latest()->get()
+            'task' => Task::findOrFail($id),
+            'users' => User::latest()->get(),
+            'statuses' => ['ongoing', 'fixing', 'delay'], // tambahkan opsi status
         ]);
+    }
+
+    public function completed($id)
+    {
+        $task = Task::findOrFail($id);
+
+        // Set status to completed
+        $task->status = 'completed';
+        $task->save();
+
+        // Notify users
+        $users = User::whereIn('id', [$task->assigneduser_id, $task->taskcreator_id])->get();
+        Notification::send($users, new TaskCompleted($task)); // Menggunakan notifikasi TaskCompleted
+
+        return redirect('/task')->with('success', 'Task marked as completed');
     }
 
     /**
@@ -93,12 +108,17 @@ class TaskController extends Controller
      */
     public function update(Request $request, $id)
     {
+        $task = Task::findOrFail($id);
+
         $attributes = $this->validateTask($request);
-        $task =  Task::find($id);
-        $attributes['taskcreator_id'] = Auth::user()->id;
-        $attributes['completed'] = 0;
-        $attributes['slug'] = Str::slug($request->title);
-        $task->update($attributes);
+
+        $task->update([
+            'title' => $request->title,
+            'description' => $request->description,
+            'due' => $request->due,
+            'assigneduser_id' => $request->assigneduser_id,
+            'status' => $request->status, // Update status
+        ]);
 
         $this->notifyUser($task->assigneduser_id);
 
@@ -113,39 +133,26 @@ class TaskController extends Controller
      */
     public function destroy($id)
     {
-        $task = Task::find($id);
-        $task->delete;
+        Task::findOrFail($id)->delete();
+
         return redirect('/task')->with('success', 'Task Deleted');
     }
 
     public function validateTask(Request $request)
     {
-        $attributes = $request->validate([
+        return $request->validate([
             'title' => 'required',
             'due' => 'required',
             'description' => 'required',
-            'assigneduser_id' => ['required', Rule::exists('users', 'id')]
+            'assigneduser_id' => ['required', Rule::exists('users', 'id')],
+            'status' => ['required', Rule::in(['ongoing', 'fixing', 'delay'])], // Validate status
         ]);
-
-        return $attributes;
-    }
-
-    public function completed($id)
-    {
-        $task = Task::find($id);
-        $task->completed = 1;
-        $task->update();
-        $users = User::where('id', $task->assigneduser_id )
-                        ->orWhere('id',$task->taskcreator_id)
-                        ->get();
-        Notification::send($users, new TaskCompleted($task));
-        return redirect('/task')->with('success', 'Task marked completed');
     }
 
     public function notifyUser($assignedUserId)
     {
-        $task = Task::where('assigneduser_id',$assignedUserId)->first();
-        $user = User::where('id', $assignedUserId)->first();
+        $task = Task::where('assigneduser_id', $assignedUserId)->first();
+        $user = User::find($assignedUserId);
         Notification::send($user, new TaskAssigned($task));
 
         return back()->with('success', 'Task notification email has been sent to the assigned user');

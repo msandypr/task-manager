@@ -27,6 +27,7 @@
             <x-content-layout contentName="Created by" contents="{{ $task->getTaskCreatorUser() }}" />
             <x-content-layout contentName="Assigned to" contents="{{ $task->getAssignedUser() }}" />
             <x-content-layout contentName="Description" contents="{{ $task->description }}" />
+            <x-content-layout contentName="Status" contents="{{ $task->status }}" /> <!-- Menampilkan status -->
         </div>
     </section>
     <hr class="bg-gray-500 my-5">

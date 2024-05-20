@@ -21,7 +21,7 @@ class CreateTasksTable extends Migration
             $table->string('slug');
             $table->text('description');
             $table->dateTime('due');
-            $table->boolean('completed');
+            $table->enum('status', ['ongoing', 'fixing', 'delay', 'completed'])->default('ongoing');
             $table->timestamps();
         });
     }
