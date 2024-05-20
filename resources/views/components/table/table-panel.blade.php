@@ -2,8 +2,8 @@
 <x-layout>
     <x-section-header sectionName="{{$tableName}}"/>
     <div class="w-full mt-4  bg-gradient-to-b from-gray-200 to-gray-100 border-b-4 border-blue-600 rounded-lg shadow-xl p-2">
-        <p class="text-xl pb-3 flex items-center">
-            <i class="fas fa-tasks mr-3"></i> <a class="underline"
+        <p class="text-xl pb-3 flex items-center ml-4">
+            <i class="fas fa-plus mr-3"></i> <a class=""
             href="{{ route('task.create') }}">New Task</a>
         </p>
         <div class="bg-white overflow-auto">
