@@ -7,7 +7,6 @@ use App\Models\Task;
 
 trait TaskUserManager
 {
-
     public function getAssignedUser()
     {
         $assignedUser = User::find($this->assigneduser_id);
@@ -60,7 +59,9 @@ trait TaskUserManager
 
     public function noOfTaskCompleted()
     {
-        return 0; // Hanya untuk menjaga konsistensi, karena tidak ada lagi completed
+        return Task::where(function ($query) {
+            $query->where('taskcreator_id', $this->id)
+                ->orWhere('assigneduser_id', $this->id);
+        })->where('status', 'completed')->count();
     }
-
 }

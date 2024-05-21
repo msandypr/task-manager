@@ -8,7 +8,6 @@
     </div>
 
     {{-- User's task table --}}
-
     <thead>
         <tr>
             <x-table.table-head thName="Date Created" />
@@ -16,7 +15,7 @@
             <x-table.table-head thName="Created By" />
             <x-table.table-head thName="Assigned to" />
             <x-table.table-head thName="Due" />
-            <x-table.table-head thName="Completed" />
+            <x-table.table-head thName="Status" />
         </tr>
     </thead>
     <tbody>
@@ -29,7 +28,7 @@
                 <x-table.table-data tdName="{{ $task->getTaskCreatorUser() }}" />
                 <x-table.table-data tdName="{{ $task->getAssignedUser() }}" />
                 <x-table.table-data tdName="{{ $task->due }}" />
-                <x-table.table-data tdName="{{ $task->completed }}" />
+                <x-table.table-data tdName="{{ $task->status === 'completed' ? 'Yes' : 'No' }}" />
             </tr>
         @endforeach
     </tbody>
