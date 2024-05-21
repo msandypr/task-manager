@@ -77,12 +77,12 @@ class TaskController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(Task $task)
     {
+        $users = User::all();
         return view('task.edit', [
-            'task' => Task::findOrFail($id),
-            'users' => User::latest()->get(),
-            'statuses' => ['ongoing', 'fixing', 'delay'], // tambahkan opsi status
+            'task' => $task,
+            'users' => $users
         ]);
     }
 
@@ -108,23 +108,19 @@ class TaskController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, Task $task)
     {
-        $task = Task::findOrFail($id);
-
-        $attributes = $this->validateTask($request);
-
-        $task->update([
-            'title' => $request->title,
-            'description' => $request->description,
-            'due' => $request->due,
-            'assigneduser_id' => $request->assigneduser_id,
-            'status' => $request->status, // Update status
+        $validatedData = $request->validate([
+            'title' => 'required|string|max:255',
+            'description' => 'required|string',
+            'due' => 'required|date',
+            'assigneduser_id' => 'required|integer|exists:users,id',
+            'status' => 'required|string|in:ongoing,fixing,delay'
         ]);
 
-        $this->notifyUser($task->assigneduser_id);
+        $task->update($validatedData);
 
-        return redirect('/task')->with('success', 'Task updated and assigned user notified by email');
+        return redirect()->route('task.index')->with('success', 'Task updated successfully.');
     }
 
     /**

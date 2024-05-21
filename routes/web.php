@@ -28,6 +28,9 @@ Route::post('/logout', [SessionsController::class, 'destroy']);
 Route::patch('/task/{task}/completed', [TaskController::class,'completed']);
 Route::post('/task/{task}/comment', [CommentController::class, 'store']);
 Route::get('/task/{task}/notify', [TaskController::class, 'notifyUser']);
+Route::get('task/{task}/edit', [TaskController::class, 'edit'])->name('task.edit');
+Route::patch('task/{task}', [TaskController::class, 'update'])->name('task.update');
+
 
 Route::get('user/admin/dashboard', [UserController::class, 'adminDashboard'])->name('admin.dashboard');
 Route::get('user/{user}/dashboard', [UserController::class, 'userDashboard'])->name('user.dashboard');
