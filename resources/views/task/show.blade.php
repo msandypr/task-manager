@@ -1,6 +1,6 @@
 <x-sub-section-panel sectionName="Task: {{ $task->title }}">
     {{-- show task section --}}
-    <section>
+    <section class="flex justify-center">
         <div class="container">
             {{-- Action section --}}
             <div class="flex flex-row-reverse space-x-reverse">
@@ -11,16 +11,20 @@
                         <button class="bg-red-500 h-10 w-10 rounded"><i class="fas fa-trash-alt fa-inverse"></i></button>
                     </form>
                     @if (!$task->completed)
-                        <button class="bg-green-500 h-10 w-10 rounded"><a href="/task/{{ $task->id }}/notify"><i class="fas fa-envelope fa-inverse"></i></a></button>
-                        <button class="bg-blue-500 h-10 w-10"><a href="/task/{{ $task->id }}/edit"> <i class="fas fa-edit fa-inverse"></i></a></button>
+                        <button class="bg-green-500 h-10 w-10 rounded mr-2"><a href="/task/{{ $task->id }}/notify"><i
+                                    class="fas fa-envelope fa-inverse"></i></a></button>
+                        <button class="bg-blue-500 h-10 w-10 rounded mr-2"><a href="/task/{{ $task->id }}/edit"> <i
+                                    class="fas fa-edit fa-inverse"></i></a></button>
                         <form method="post" action="/task/{{ $task->id }}/completed">
                             @csrf
                             @method('PATCH')
-                            <button class="bg-blue-300 h-10 w-auto rounded">Mark Complete</button>
+                            <button class="bg-blue-300 h-10 w-auto rounded mr-2">Task Completed</button>
                         </form>
                     @else
-                        <button class="bg-blue-500 h-10 w-10"><a href="/task/{{ $task->id }}/edit"> <i class="fas fa-edit fa-inverse"></i></a></button>
-                        <button class="bg-green-500 h-10 w-10 rounded"><a href="/task/{{ $task->id }}/notify"><i class="fas fa-envelope fa-inverse"></i></a></button>
+                        <button class="bg-blue-500 h-10 w-10 mr-2"><a href="/task/{{ $task->id }}/edit"> <i
+                                    class="fas fa-edit fa-inverse"></i></a></button>
+                        <button class="bg-green-500 h-10 w-10 rounded mr-2"><a href="/task/{{ $task->id }}/notify"><i
+                                    class="fas fa-envelope fa-inverse"></i></a></button>
                     @endif
                 @endauth
             </div>
@@ -34,7 +38,7 @@
     </section>
     <hr class="bg-gray-500 my-5">
     {{-- task comment section --}}
-    <div class="row flex mt-2">
+    <div class="row flex justify-center">
         <div class="bg-gray-500 border border-blue-100 w-1/3">
             <form action="/task/{{ $task->id }}/comment" method="post"
                 class="bg-gray-100 border border-gray-200 p-2 rounded-xl">
@@ -45,8 +49,8 @@
                     </h2>
                 </header>
                 <div>
-                    <textarea name="body" class="w-full mt-3 rounded-xl" cols="30" rows="3"
-                        placeholder="Quick Updates...." required></textarea>
+                    <textarea name="body" class="w-full mt-3 rounded-xl" cols="30" rows="3" placeholder="Quick Updates...."
+                        required></textarea>
                     <x-form.error inputName="body" />
                 </div>
                 @auth

@@ -26,6 +26,16 @@
                         @endif
                     </select>
                 </div>
+                <!-- Tambahkan input field untuk status -->
+                <div class="mt-2">
+                    <label class="block text-sm text-gray-600" for="status">Status</label>
+                    <select name="status" id="status">
+                        <option value="ongoing">Ongoing</option>
+                        <option value="fixing">Fixing</option>
+                        <option value="delay">Delay</option>
+                    </select>
+                </div>
+                <!-- Akhir dari tambahan -->
                 @auth
                 <x-form.button buttonName="Create" />
                 @else
