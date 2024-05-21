@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\User;
 use App\Models\Task;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Auth;
 
 class UserController extends Controller
@@ -46,10 +47,30 @@ class UserController extends Controller
         return redirect()->route('user.profile')->with('success', 'Profile updated successfully.');
     }
 
+    public function updatePassword(Request $request)
+    {
+        $request->validate([
+            'current_password' => 'required',
+            'new_password' => 'required|min:8|confirmed',
+        ]);
+
+        $user = Auth::user();
+
+        if (!Hash::check($request->current_password, $user->password)) {
+            return back()->withErrors(['current_password' => 'Current password does not match']);
+        }
+
+        $user->password = Hash::make($request->new_password);
+        $user->save();
+
+        return redirect()->route('user.profile')->with('success', 'Password updated successfully.');
+    }
+
+
     public function adminDashboard()
     {
 
-        return view('user.admin-dashboard',[
+        return view('user.admin-dashboard', [
             'userCount' => User::latest()->count(),
             'users' => User::latest()->filter(['search'])->paginate(10),
             'tasks' => Task::latest()->get(),
@@ -60,11 +81,11 @@ class UserController extends Controller
 
     public function userDashboard(User $user)
     {
-        return view('user.dashboard',[
+        return view('user.dashboard', [
             'user' => $user,
             'tasks' => Task::where('taskcreator_id', $user->id)
-                            ->orWhere('assigneduser_id', $user->id)
-                            ->paginate(10)
+                ->orWhere('assigneduser_id', $user->id)
+                ->paginate(10)
         ]);
     }
 
