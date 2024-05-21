@@ -18,10 +18,12 @@ class TaskController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
+        $filters = $request->only(['search', 'searchbody', 'status']);
+
         return view('task.index', [
-            'tasks' => Task::latest()->filter(['search', 'searchbody'])->paginate(10),
+            'tasks' => Task::latest()->filter($filters)->paginate(10),
         ]);
     }
 

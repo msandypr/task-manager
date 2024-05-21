@@ -1,13 +1,25 @@
 <x-table.table-panel tableName="Tasks" :paginatorAttr="$tasks">
-    <div class="container flex items-center mb-4">
+    <div class="container flex flex-wrap items-center mb-4">
         <form method="GET" action="/task" class="ml-4">
             <x-form.input inputName="search" type="date" value="{{ request('search') }}"/>
-            <x-form.button  buttonName="search" class=""/>
+            <x-form.button buttonName="search" class=""/>
         </form>
 
         <form method="GET" action="/task" class="mr-5 ml-4">
-            <x-form.input inputName="searchbody" value="{{ request('search') }}"/>
-            <x-form.button  buttonName="search"/>
+            <x-form.input inputName="searchbody" value="{{ request('searchbody') }}"/>
+            <x-form.button buttonName="search"/>
+        </form>
+
+        <form method="GET" action="/task" class="ml-4">
+            <select name="status" class="form-select">
+                <option value="">Filter Task Status</option>
+                @foreach (App\Models\Task::getStatusOptions() as $status)
+                    <option value="{{ $status }}" {{ request('status') == $status ? 'selected' : '' }}>
+                        {{ ucfirst($status) }}
+                    </option>
+                @endforeach
+            </select>
+            <x-form.button buttonName="Filter"/>
         </form>
     </div>
     <thead>
@@ -29,7 +41,7 @@
                 </td>
                 <x-table.table-data tdName="{{ $task->getTaskCreatorUser()}}" />
                 <x-table.table-data tdName="{{ $task->getAssignedUser() }}" />
-                <x-table.table-data tdName="{{date('d/m/Y', strtotime($task->due))}}" />
+                <x-table.table-data tdName="{{ date('d/m/Y', strtotime($task->due)) }}" />
                 <x-table.table-data tdName="{{ $task->status }}" />
             </tr>
         @endforeach

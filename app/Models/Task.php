@@ -12,7 +12,7 @@ class Task extends Model
     protected $fillable = ['title', 'description', 'due', 'assigneduser_id', 'status', 'taskcreator_id', 'slug'];
 
     protected $attributes = [
-        'status' => 'ongoing', // Atur nilai default jika diperlukan
+        'status' => 'ongoing', // nilai default
     ];
 
     public function formatDate()
@@ -25,20 +25,28 @@ class Task extends Model
         return $this->hasMany(Comment::class);
     }
 
-    public function scopeFilter($query)
+    public function scopeFilter($query, $filters)
     {
-        if (request('search')) {
-            $query
-                ->where('due', 'like', '%' . request('search') . '%')
-                ->orWhere('created_at', 'like', '%' . request('search') . '%')
-                ->orWhere('title', 'like', '%' . request('search') . '%')
-                ->orWhere('description', 'like', '%' . request('search') . '%');
+        if (isset($filters['search'])) {
+            $query->where(function ($query) use ($filters) {
+                $query
+                    ->where('due', 'like', '%' . $filters['search'] . '%')
+                    ->orWhere('created_at', 'like', '%' . $filters['search'] . '%')
+                    ->orWhere('title', 'like', '%' . $filters['search'] . '%')
+                    ->orWhere('description', 'like', '%' . $filters['search'] . '%');
+            });
         }
 
-        if (request('searchbody')) {
-            $query
-                ->orWhere('title', 'like', '%' . request('searchbody') . '%')
-                ->orWhere('description', 'like', '%' . request('searchbody') . '%');
+        if (isset($filters['searchbody'])) {
+            $query->where(function ($query) use ($filters) {
+                $query
+                    ->orWhere('title', 'like', '%' . $filters['searchbody'] . '%')
+                    ->orWhere('description', 'like', '%' . $filters['searchbody'] . '%');
+            });
+        }
+
+        if (isset($filters['status'])) {
+            $query->where('status', $filters['status']);
         }
     }
 
