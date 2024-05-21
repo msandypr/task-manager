@@ -34,6 +34,9 @@ Route::get('/task/{task}/notify', [TaskController::class, 'notifyUser']);
 Route::get('user/admin/dashboard', [UserController::class, 'adminDashboard'])->name('admin.dashboard');
 Route::get('user/{user}/dashboard', [UserController::class, 'userDashboard'])->name('user.dashboard');
 
+Route::get('/profile', [UserController::class, 'showProfile'])->name('user.profile');
+Route::get('/profile/edit', [UserController::class, 'editProfile'])->name('user.edit-profile');
+Route::post('/profile', [UserController::class, 'updateProfile'])->name('user.update-profile');
 
 
 Route::resources([

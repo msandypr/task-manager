@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use App\Models\Task;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class UserController extends Controller
 {
@@ -16,6 +18,32 @@ class UserController extends Controller
     public function index()
     {
         //
+    }
+
+    public function showProfile()
+    {
+        $user = Auth::user();
+        return view('profile.index', compact('user'));
+    }
+
+    public function editProfile()
+    {
+        $user = Auth::user();
+        return view('profile.edit', compact('user'));
+    }
+
+    public function updateProfile(Request $request)
+    {
+        $user = Auth::user();
+        $data = $request->validate([
+            'name' => 'required|string|max:255',
+            'email' => 'required|email|max:255|unique:users,email,' . $user->id,
+            // field lainnya akan di update.
+        ]);
+
+        $user->update($data);
+
+        return redirect()->route('user.profile')->with('success', 'Profile updated successfully.');
     }
 
     public function adminDashboard()
