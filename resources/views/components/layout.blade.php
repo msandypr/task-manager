@@ -52,7 +52,7 @@
             @auth
                 @if (Auth::user()->admin)
                     <a href="{{ route('admin.dashboard') }}" class="flex items-center text-blue-600 hover:text-gray-700">
-                        <i class="fas fa-tachometer-alt mr-2"></i>
+                        <i class="fas fa-newspaper mr-2"></i>
                         Admin Dashboard
                     </a>
                 @endif
@@ -62,7 +62,7 @@
                 </a>
             @endauth
             <a href="{{ route('task.index') }}" class="flex items-center text-blue-600 hover:text-gray-700">
-                <i class="fas fa-tasks mr-2"></i>
+                <i class="fas fa-clipboard mr-2"></i>
                 Tasks
             </a>
             @auth

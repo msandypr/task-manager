@@ -1,6 +1,6 @@
 <x-table.table-panel tableName="Admin Panel" :paginatorAttr="$users">
     {{-- summary panel --}}
-    <div class="container flex flex-row">
+    <div class="container flex flex-row ml-4 mt-4">
         <x-dashboard-panel attributeContent="{{$userCount}}"  attributeName="Users" fontName="users"/>
         <x-dashboard-panel attributeContent="{{$tasks->Count()}}" attributeName="Tasks"  fontName="tasks"/>
         <x-dashboard-panel attributeContent="{{$taskCompleted}}"  attributeName="Completed" fontName="check-square"/>
@@ -8,7 +8,7 @@
     </div>
 
     {{-- User search form --}}
-    <div class="container flex items-center">
+    <div class="container flex items-center ml-4 mb-4">
         <form method="GET" action="/user/admin/dashboard">
             <x-form.input inputName="search"  value="{{ request('search') }}"/>
             <x-form.button  buttonName="search" />
