@@ -73,8 +73,8 @@
                     <button x-show="isDropdownOpen" @click="isDropdownOpen = false"
                         class="h-full w-full fixed inset-0 cursor-default"></button>
                     <div x-show="isDropdownOpen" class="absolute right-0 w-48 bg-white rounded-lg shadow-lg py-2 mt-2">
-                        <a href="/user/{{ auth()->id() }}/dashboard"
-                            class="block px-4 py-2 account-link hover:text-white">Account</a>
+                        {{-- <a href="/user/{{ auth()->id() }}/dashboard"
+                            class="block px-4 py-2 account-link hover:text-white">Account</a> --}}
                         <a href="/profile"
                             class="block px-4 py-2 account-link hover:text-white">Profile</a>
                         <form action="/logout" method="post" class="block px-4 py-2 account-link hover:text-white">
@@ -117,8 +117,8 @@
                 Tasks
             </a>
             @auth
-                <a href="/user/{{ auth()->id() }}/dashboard"
-                    class="block px-3 py-2 rounded-md text-base font-medium text-blue-600 hover:text-gray-700 hover:bg-gray-50">Account</a>
+                {{-- <a href="/user/{{ auth()->id() }}/dashboard"
+                    class="block px-3 py-2 rounded-md text-base font-medium text-blue-600 hover:text-gray-700 hover:bg-gray-50">Account</a> --}}
                 <a href="/profile"
                     class="block px-3 py-2 rounded-md text-base font-medium text-blue-600 hover:text-gray-700 hover:bg-gray-50">Profile</a>
                 <form action="/logout" method="post"
