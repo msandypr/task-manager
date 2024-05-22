@@ -1,5 +1,5 @@
 @props(['buttonName'])
-<div class="mt-6">
-    <button class="px-4 py-1 text-white font-light tracking-wider bg-blue-500 rounded"
-        type="submit" {{ $attributes }}>{{ $buttonName }}</button>
-</div>
+
+<button type="submit" class="mt-7 inline-block px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-600 focus:ring-opacity-50">
+    {{ $buttonName }}
+</button>

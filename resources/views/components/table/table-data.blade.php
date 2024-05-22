@@ -1,2 +1,2 @@
 @props(['tdName'])
-<td class="py-4 px-6 border-b border-grey-light">{{ $tdName }}</td>
+<td class="py-3 px-4 border-b border-gray-200">{{ $tdName }}</td>
