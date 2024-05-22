@@ -45,8 +45,7 @@
     <!-- Navbar -->
     <header class="w-full bg-white py-4 px-6 flex items-center justify-between">
         <div>
-            <a href="{{ route('task.index') }}"
-                class="text-blue-600 text-3xl font-semibold uppercase hover:text-gray-300">Task Manager</a>
+            <a href="{{ route('task.index') }}" class="text-blue-600 text-3xl font-semibold uppercase">Task Manager</a>
         </div>
         <nav class="hidden md:flex items-center space-x-4">
             @auth
@@ -75,8 +74,7 @@
                     <div x-show="isDropdownOpen" class="absolute right-0 w-48 bg-white rounded-lg shadow-lg py-2 mt-2">
                         {{-- <a href="/user/{{ auth()->id() }}/dashboard"
                             class="block px-4 py-2 account-link hover:text-white">Account</a> --}}
-                        <a href="/profile"
-                            class="block px-4 py-2 account-link hover:text-white">Profile</a>
+                        <a href="/profile" class="block px-4 py-2 account-link hover:text-white">Profile</a>
                         <form action="/logout" method="post" class="block px-4 py-2 account-link hover:text-white">
                             @csrf
                             <button>Logout</button>
@@ -86,8 +84,10 @@
             @endauth
             @guest
                 <div>
-                    <a href="/register" class="px-4 py-2 account-link hover:text-white">Register</a>
-                    <a href="/login" class="px-4 py-2 account-link hover:text-white">Login</a>
+                    <a href="/register"
+                        class="px-4 py-2 account-link rounded hover:bg-blue-600 hover:text-white">Register</a>
+                    <a href="/login" class="px-4 py-2 account-link rounded hover:bg-blue-600 hover:text-white">Login</a>
+
                 </div>
             @endguest
         </nav>
